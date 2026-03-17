@@ -45,7 +45,6 @@ const handleRegister = async () => {
     const data = await response.json();
 
     if (response.ok) {
-        // Auto login or redirect to login
         router.push('/login');
     } else {
       error.value = data.error || 'Registration failed';

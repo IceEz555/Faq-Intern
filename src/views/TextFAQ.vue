@@ -85,7 +85,7 @@
 <script setup>
 import { ref, nextTick, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { apiAuthFetch, apiFetch } from '@/utils/api.js';
+import { apiAuthFetch } from '@/utils/api.js';
 
 const userInput  = ref('');
 const chatWindow = ref(null);
