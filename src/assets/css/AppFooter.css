@@ -1,0 +1,14 @@
+/* Footer Styles */
+.app-footer {
+  background-color: #003366; /* ETDA Blue */
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.9rem;
+  margin-top: auto; /* Push to bottom if acceptable in flex container */
+}
+
+.app-footer p {
+  margin: 0;
+  opacity: 0.8;
+}

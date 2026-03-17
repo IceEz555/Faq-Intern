@@ -1,0 +1,209 @@
+/* ── Admin Dashboard ────────────────────────────────────────────── */
+.admin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.admin-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #003366;
+  margin-bottom: 0.25rem;
+}
+
+.admin-subtitle {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Topbar with logout ─────────────────────────────────────────── */
+.admin-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.admin-topbar .admin-subtitle { margin-bottom: 0; }
+
+.logout-btn {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.logout-btn:hover { background: #fac9c9; }
+
+/* ── Stat Cards ─────────────────────────────────────────────────── */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #e0e6f0;
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,51,102,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-icon { font-size: 1.5rem; }
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #003366;
+  line-height: 1;
+}
+.stat-label { font-size: 0.8rem; color: #888; }
+
+/* ── Tabs ───────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.2rem;
+  border-bottom: 2px solid #e0e6f0;
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px 8px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-btn:hover { background: #f0f4ff; color: #003366; }
+.tab-btn.active {
+  color: #003366;
+  border-bottom: 3px solid #003366;
+  background: #f0f4ff;
+}
+
+/* ── Search bar ─────────────────────────────────────────────────── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid #d0d9f0;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  width: 280px;
+  transition: border 0.15s;
+}
+.search-input:focus { outline: none; border-color: #003366; }
+
+.refresh-btn {
+  background: #003366;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.refresh-btn:hover { background: #002244; }
+
+/* ── Table ──────────────────────────────────────────────────────── */
+.table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e0e6f0;
+  box-shadow: 0 2px 8px rgba(0,51,102,0.06);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.admin-table th {
+  background: #f4f7fb;
+  color: #003366;
+  font-weight: 600;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid #e0e6f0;
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f3f8;
+  vertical-align: top;
+  color: #333;
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: #f9fbff; }
+
+.cell-question { color: #003366; font-weight: 500; max-width: 280px; }
+.cell-answer   { color: #444;    max-width: 340px; }
+.cell-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+
+/* ── Copy button ────────────────────────────────────────────────── */
+.copy-btn {
+  background: none;
+  border: 1px solid #c5d2e8;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.78rem;
+  color: #003366;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.copy-btn:hover   { background: #e8eeff; }
+.copy-btn.copied  { background: #d4f7dc; border-color: #5cb85c; color: #2e7d32; }
+
+/* ── Badges ─────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+.badge-up    { background: #d4f7dc; color: #2e7d32; }
+.badge-down  { background: #fde8e8; color: #c0392b; }
+.badge-token { background: #e8f0ff; color: #003366; }
+
+/* ── Status messages ────────────────────────────────────────────── */
+.loading-msg, .empty-msg {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #888;
+  font-size: 0.9rem;
+}
+.loading-msg { color: #003366; }

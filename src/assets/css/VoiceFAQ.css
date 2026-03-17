@@ -1,0 +1,110 @@
+/* VoiceFAQ Styles */
+.page-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  font-family: sans-serif;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.voice-interface {
+  text-align: center;
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.status-message {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #666;
+  height: 1.5rem;
+}
+
+.mic-button {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #003366;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
+}
+
+.mic-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 51, 102, 0.4);
+}
+
+.mic-button.listening {
+  background-color: #dc3545;
+  animation: pulse 1.5s infinite;
+}
+
+.mic-icon {
+  font-size: 3rem;
+}
+
+.instruction {
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.transcript-box, .response-box {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.transcript-box h3, .response-box h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.transcript-box p {
+  font-style: italic;
+  color: #333;
+}
+
+.response-box {
+  background-color: #e8f4fd;
+  border: 1px solid #b6d4fe;
+}
+
+.response-box p {
+  color: #003366;
+  font-weight: 500;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(220, 53, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+  }
+}

@@ -1,0 +1,72 @@
+/* NavBar Styles */
+.navbar {
+  background-color: #003366; /* ETDA Blue */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.brand-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-link:hover, .nav-link.router-link-active {
+  color: white;
+}
+
+.auth-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  padding-left: 1rem;
+}
+
+.username {
+  font-size: 0.9rem;
+  color: #add8e6;
+}
+
+.logout-btn {
+  color: #ffcccc;
+}
+
+.logout-btn:hover {
+  color: #ff9999;
+}
