@@ -43,6 +43,9 @@
       <button class="tab-btn" :class="{ active: tab === 'stats' }" @click="tab = 'stats'">
         📊 Usage Stats
       </button>
+      <button class="tab-btn" :class="{ active: tab === 'scrape' }" @click="tab = 'scrape'">
+        🕷️ Web Scrape
+      </button>
     </div>
 
     <!-- ── Search + Refresh ── -->
@@ -167,6 +170,51 @@
         </table>
       </div>
     </div>
+    <!-- ── Tab: Web Scrape ── -->
+    <div v-if="tab === 'scrape'" class="scrape-panel">
+      <p class="scrape-desc">ใส่ URL เพื่อ scrape เนื้อหาแล้ว embed ลง Qdrant</p>
+
+      <!-- URL Input -->
+      <div class="scrape-input-row">
+        <input
+          v-model="scrapeUrl"
+          type="url"
+          class="scrape-url-input"
+          placeholder="https://example.com/page"
+          @keyup.enter="doPreview"
+        />
+        <button class="scrape-btn" @click="doPreview" :disabled="scrapeLoading || !scrapeUrl.trim()">
+          {{ scrapeLoading && scrapePhase === 'preview' ? '⏳ กำลังดูตัวอย่าง...' : '🔍 Preview' }}
+        </button>
+      </div>
+
+      <!-- Error -->
+      <div v-if="scrapeError" class="scrape-error">❌ {{ scrapeError }}</div>
+
+      <!-- Preview Card -->
+      <div v-if="scrapePreview" class="scrape-preview-card">
+        <div class="preview-title">📄 {{ scrapePreview.title }}</div>
+        <div class="preview-meta">
+          <span class="badge badge-token">{{ scrapePreview.total_chars.toLocaleString() }} chars</span>
+          <span class="badge badge-up">~{{ scrapePreview.estimated_chunks }} chunks</span>
+        </div>
+        <div class="preview-snippet">{{ scrapePreview.snippet }}</div>
+
+        <!-- Embed Button -->
+        <button
+          class="embed-btn"
+          @click="doEmbed"
+          :disabled="scrapeLoading || scrapeEmbedDone"
+        >
+          {{ scrapeLoading && scrapePhase === 'embed' ? '⏳ กำลัง Embed...' : scrapeEmbedDone ? '✅ Embedded แล้ว!' : '🚀 Confirm & Embed' }}
+        </button>
+
+        <!-- Success -->
+        <div v-if="scrapeSuccess" class="scrape-success">
+          ✅ Embed สำเร็จ! {{ scrapeSuccess.chunks }} chunks จาก "{{ scrapeSuccess.title }}"
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -179,6 +227,15 @@ const router  = useRouter();
 const tab     = ref('negative');
 const search  = ref('');
 const loading = ref(false);
+
+// ── Web Scrape state ───────────────────────────────────────────────────────────
+const scrapeUrl      = ref('');
+const scrapePreview  = ref(null);
+const scrapeSuccess  = ref(null);
+const scrapeError    = ref('');
+const scrapeLoading  = ref(false);
+const scrapeEmbedDone = ref(false);
+const scrapePhase    = ref('');  // 'preview' | 'embed'
 
 const negativeFeedback = ref([]);
 const unknownAnswers   = ref([]);
@@ -273,8 +330,112 @@ const formatDate = (iso) => {
 };
 
 onMounted(loadAll);
+
+// ── Web Scrape functions ──────────────────────────────────────────────────────────
+const doPreview = async () => {
+  const url = scrapeUrl.value.trim();
+  if (!url) return;
+  scrapePreview.value  = null;
+  scrapeSuccess.value  = null;
+  scrapeError.value    = '';
+  scrapeEmbedDone.value = false;
+  scrapeLoading.value  = true;
+  scrapePhase.value    = 'preview';
+  try {
+    const res  = await apiAuthFetch('/llm/scrape/preview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+    const data = await res.json();
+    if (!res.ok) { scrapeError.value = data.detail || 'Preview failed'; return; }
+    scrapePreview.value = data;
+  } catch (e) {
+    scrapeError.value = 'Network error: ' + e.message;
+  } finally {
+    scrapeLoading.value = false;
+    scrapePhase.value   = '';
+  }
+};
+
+const doEmbed = async () => {
+  const url = scrapeUrl.value.trim();
+  if (!url || scrapeEmbedDone.value) return;
+  scrapeSuccess.value  = null;
+  scrapeError.value    = '';
+  scrapeLoading.value  = true;
+  scrapePhase.value    = 'embed';
+  try {
+    const res  = await apiAuthFetch('/llm/scrape/embed', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+    const data = await res.json();
+    if (!res.ok) { scrapeError.value = data.detail || 'Embed failed'; return; }
+    scrapeSuccess.value  = data;
+    scrapeEmbedDone.value = true;
+  } catch (e) {
+    scrapeError.value = 'Network error: ' + e.message;
+  } finally {
+    scrapeLoading.value = false;
+    scrapePhase.value   = '';
+  }
+};
 </script>
 
 <style scoped>
 @import '../assets/css/AdminDashboard.css';
+
+/* ── Web Scrape Tab ───────────────────────────────────────────────── */
+.scrape-panel { padding: 20px 0; max-width: 720px; }
+.scrape-desc  { color: #666; margin-bottom: 16px; font-size: 0.9rem; }
+
+.scrape-input-row {
+  display: flex; gap: 10px; margin-bottom: 16px;
+}
+.scrape-url-input {
+  flex: 1; padding: 10px 14px; border: 1.5px solid #c9d4e8;
+  border-radius: 8px; font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+.scrape-url-input:focus { outline: none; border-color: #003366; }
+
+.scrape-btn {
+  padding: 10px 20px; background: #003366; color: #fff;
+  border: none; border-radius: 8px; cursor: pointer;
+  font-weight: 600; white-space: nowrap;
+  transition: background 0.2s;
+}
+.scrape-btn:hover:not(:disabled) { background: #004fa3; }
+.scrape-btn:disabled { opacity: 0.5; cursor: default; }
+
+.scrape-error   { color: #c00; background: #fff0f0; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; }
+.scrape-success { color: #166534; background: #f0fdf4; padding: 10px 14px; border-radius: 8px; margin-top: 12px; font-weight: 500; }
+
+.scrape-preview-card {
+  background: #f7f9ff; border: 1.5px solid #d0d9f5;
+  border-radius: 12px; padding: 20px;
+}
+.preview-title {
+  font-size: 1rem; font-weight: 700; color: #003366;
+  margin-bottom: 10px;
+}
+.preview-meta  { display: flex; gap: 8px; margin-bottom: 12px; }
+.preview-snippet {
+  font-size: 0.85rem; color: #444; line-height: 1.6;
+  background: #fff; border: 1px solid #e0e7f5;
+  border-radius: 8px; padding: 12px;
+  max-height: 160px; overflow-y: auto;
+  white-space: pre-wrap; margin-bottom: 16px;
+}
+
+.embed-btn {
+  padding: 10px 24px; background: #16803c; color: #fff;
+  border: none; border-radius: 8px; cursor: pointer;
+  font-weight: 700; font-size: 0.95rem;
+  transition: background 0.2s;
+}
+.embed-btn:hover:not(:disabled) { background: #15803d; }
+.embed-btn:disabled { opacity: 0.6; cursor: default; }
 </style>
